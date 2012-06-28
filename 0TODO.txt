@@ -5,3 +5,4 @@
 -кнопки rnd,repeat
 -протестирвать бд, хедеры таблицы
 -update
+-fuck da crisiz
