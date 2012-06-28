@@ -126,7 +126,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.clearPlsButton.clicked.connect(self.clearPlaylist)
         self.settingsButton.clicked.connect(self.setW.show)
         self.actionScan.triggered.connect(self.pro.show)
-        self.randomButton.toggled.connect(self.setRandom)
+        #self.randomButton.toggled.connect(self.setRandom)
         #self.repeatButton.toggled.connect(self.setRepeat)
         #показываем фс
         model = QFileSystemModel()
@@ -409,12 +409,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         #ставим иконку "воспроизведения"
         self.tableWidget.item(self.oldRow,0).setIcon(QIcon(QPixmap('Icons/select_play.png')))
 
-    def setRandom(self):
-        return self.randomButton.isChecked()
-    def setRepeat(self):
-        self.repeat = self.repeatButton.isChecked()
-        print self.repeat
-        return self.repeatButton.isChecked()
+
 
     def generateM3U(self,filename=u'Pls/main.m3u'):
         #колонки: название - 1; артист - 2; длина - 4; путь - 8;

@@ -8,8 +8,6 @@ import fnmatch
 import sys
 import shutil
 from os.path import getsize
-import testray
-
 """AddToCollection(all tags)"""
 version = 0.0001
 
