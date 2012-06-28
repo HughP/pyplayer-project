@@ -138,23 +138,18 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         #----CTRL+1,2,3,4,5-------------
         if e.key() == QtCore.Qt.Key_1:
             if (e.modifiers() & QtCore.Qt.CTRL):
-                print 'Ctrl+1'
                 self.updateStars('1')
         if e.key() == QtCore.Qt.Key_2:
             if (e.modifiers() & QtCore.Qt.CTRL):
-                print 'Ctrl+2'
                 self.updateStars('2')
         if e.key() == QtCore.Qt.Key_3:
             if (e.modifiers() & QtCore.Qt.CTRL):
-                print 'Ctrl+3'
                 self.updateStars('3')
         if e.key() == QtCore.Qt.Key_4:
             if (e.modifiers() & QtCore.Qt.CTRL):
-                print 'Ctrl+4'
                 self.updateStars('4')
         if e.key() == QtCore.Qt.Key_5:
             if (e.modifiers() & QtCore.Qt.CTRL):
-                print 'Ctrl+5'
                 self.updateStars('5')
             #оценка 1 звезда
             #update запись в бд
