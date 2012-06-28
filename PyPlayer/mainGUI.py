@@ -126,8 +126,6 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.clearPlsButton.clicked.connect(self.clearPlaylist)
         self.settingsButton.clicked.connect(self.setW.show)
         self.actionScan.triggered.connect(self.pro.show)
-        #self.randomButton.toggled.connect(self.setRandom)
-        #self.repeatButton.toggled.connect(self.setRepeat)
         #показываем фс
         model = QFileSystemModel()
         model.setRootPath('C:\\')
@@ -141,18 +139,23 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         if e.key() == QtCore.Qt.Key_1:
             if (e.modifiers() & QtCore.Qt.CTRL):
                 print 'Ctrl+1'
+                self.updateStars('1')
         if e.key() == QtCore.Qt.Key_2:
             if (e.modifiers() & QtCore.Qt.CTRL):
                 print 'Ctrl+2'
+                self.updateStars('2')
         if e.key() == QtCore.Qt.Key_3:
             if (e.modifiers() & QtCore.Qt.CTRL):
                 print 'Ctrl+3'
+                self.updateStars('3')
         if e.key() == QtCore.Qt.Key_4:
             if (e.modifiers() & QtCore.Qt.CTRL):
                 print 'Ctrl+4'
+                self.updateStars('4')
         if e.key() == QtCore.Qt.Key_5:
             if (e.modifiers() & QtCore.Qt.CTRL):
                 print 'Ctrl+5'
+                self.updateStars('5')
             #оценка 1 звезда
             #update запись в бд
 
@@ -374,6 +377,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
             self.tableWidget.item(rand_value,0).setIcon(QIcon(QPixmap('Icons/select_play.png')))
             self.oldRow = rand_value
         self.play(path)
+        self.updatePlays()
 
     def playPrevTrack(self):
         #убираем иконку "воспроизведения"
@@ -391,6 +395,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
             self.tableWidget.item(rand_value,0).setIcon(QIcon(QPixmap('Icons/select_play.png')))
             self.oldRow = rand_value
         self.play(path)
+        self.updatePlays()
 
     def tableWidgetClick(self):
         ##запоминаем текущую строку
@@ -403,12 +408,19 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.play(path)
 
         #обновляем проигрывания
-        value = int(self.tableWidget.item(self.oldRow,10).text()) + 1
-        self.Coll.updateTable('music','plays',str(value),self.getID(self.oldRow))
-        self.tableWidget.item(self.oldRow,10).setText(str(value))
+        self.updatePlays()
+
         #ставим иконку "воспроизведения"
         self.tableWidget.item(self.oldRow,0).setIcon(QIcon(QPixmap('Icons/select_play.png')))
 
+    def updatePlays(self):
+        value = int(self.tableWidget.item(self.oldRow,10).text()) + 1
+        self.Coll.updateTable('music','plays',str(value),self.getID(self.oldRow))
+        self.tableWidget.item(self.oldRow,10).setText(str(value))
+
+    def updateStars(self, star):
+        self.Coll.updateTable('music','stars',star,self.getID(self.oldRow))
+        self.tableWidget.item(self.oldRow, 7).setText(star)
 
 
     def generateM3U(self,filename=u'Pls/main.m3u'):
@@ -427,6 +439,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
                              artist + " - " + title + "\n")
             fp.write(full_path + "\n")
         fp.close()
+
     def loadM3U(self, filename=u'Pls/main.m3u'):
         pass
 
