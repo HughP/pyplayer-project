@@ -10,8 +10,6 @@ from ui_progresswindow import Ui_progressDialog
 from ui_settingswindow import Ui_SettingsWindow
 from random import randint
 
-import time
-import pickle
 from DBOperation import OhMyGod
 import os
 
@@ -25,7 +23,7 @@ CURRENT_PATH_FIELD = 9
 
 
 class progressWindow(QtGui.QWidget, Ui_progressDialog):
-    def __init__(self, windowTitle, maxValue):
+    def __init__(self, windowTitle):
         QtGui.QWidget.__init__(self)
         self.setupUi(self)
         self.connect(self.pushButton,QtCore.SIGNAL("clicked()"),self.process)
@@ -35,8 +33,9 @@ class progressWindow(QtGui.QWidget, Ui_progressDialog):
         self.movie.setCacheMode(QMovie.CacheAll)
         self.movie.setSpeed(100)
         self.anim.setMovie(self.movie)
+        self.windowTitle = windowTitle
 
-##        self.pro
+    ##        self.pro
     def closeButton(self):
         self.close()
     def process(self):
@@ -44,7 +43,6 @@ class progressWindow(QtGui.QWidget, Ui_progressDialog):
         global musicPath
         self.movie.start()
         self.db = OhMyGod(self.checkBox.isChecked())
-        self.label.setText(testray.nameFile)
         self.db.ScanFolders(musicPath)
         global form
         form.getArtist()
@@ -63,7 +61,7 @@ class settingsWindow(QtGui.QWidget, Ui_SettingsWindow):
 ##        self.dialog.setFileMode(QtGui.QFileDialog.DirectoryOnly)
 
     def showDialog(self):
-        self.lineEdit.setText(self.dialog.getExistingDirectory(self,QString(u'Путь к музыке'),\
+        self.lineEdit.setText(self.dialog.getExistingDirectory(self,QString(u'Путь к музыке'),
             options=QtGui.QFileDialog.ShowDirsOnly))
 ##        if (self.dialog.exec_()):
 ##            print self.dialog.directory().absolutePath()
@@ -97,7 +95,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.coverImage.setScaledContents(1)
         #-----------------------------------
         #создаем окно
-        self.pro = progressWindow('Pro',0)
+        self.pro = progressWindow('Pro')
         #self.setW = settingsWindow()
         #self.pro.show()
         #Подключение к коллекции
@@ -362,6 +360,9 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         #разруливаем random
         if not self.randomButton.isChecked():
             path = self.tableWidget.item(self.oldRow+1,CURRENT_PATH_FIELD).text()
+            if self.repeatButton.isChecked():
+                if (self.tableWidget.rowCount()-1 == self.oldRow+1):
+                    path = self.tableWidget.item(0,CURRENT_PATH_FIELD).text()
             #СТАВИМ иконку "воспроизведения"
             self.tableWidget.item(self.oldRow+1,0).setIcon(QIcon(QPixmap('Icons/select_play.png')))
             self.oldRow += 1
