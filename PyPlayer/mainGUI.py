@@ -13,7 +13,7 @@ from random import randint
 from DBOperation import OhMyGod
 import os
 
-version = 0.0002
+version = 0.0005
 musicPath = ''
 global nameFile
 form = None
