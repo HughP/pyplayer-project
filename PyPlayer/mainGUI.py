@@ -13,7 +13,7 @@ from random import randint
 from DBOperation import OhMyGod
 import os
 
-version = 0.0005
+version = 0.0006
 musicPath = ''
 global nameFile
 form = None
@@ -34,16 +34,19 @@ class progressWindow(QtGui.QWidget, Ui_progressDialog):
         self.movie.setSpeed(100)
         self.anim.setMovie(self.movie)
         self.windowTitle = windowTitle
+        self.PathCollection = None
 
     ##        self.pro
     def closeButton(self):
         self.close()
+        print self.PathCollection
     def process(self):
 ##        self.show()
         global musicPath
+        print musicPath
         self.movie.start()
         self.db = OhMyGod(self.checkBox.isChecked())
-        self.db.ScanFolders(musicPath)
+        self.db.ScanFolders(self.PathCollection)
         global form
         form.getArtist()
 ##------------------------------------------------------------------------------
@@ -54,28 +57,18 @@ class settingsWindow(QtGui.QWidget, Ui_SettingsWindow):
         self.pushButton.clicked.connect(self.okClick)
         self.toolButton.clicked.connect(self.showDialog)
         global musicPath
-        print 'Set',musicPath
         self.lineEdit.setText(musicPath)
-##        self.dialog = QtGui.QFileDialog(self,QString('Select path to collection'),QString('c:\\'),'')
         self.dialog = QtGui.QFileDialog()
-##        self.dialog.setFileMode(QtGui.QFileDialog.DirectoryOnly)
 
     def showDialog(self):
         self.lineEdit.setText(self.dialog.getExistingDirectory(self,QString(u'Путь к музыке'),
             options=QtGui.QFileDialog.ShowDirsOnly))
-##        if (self.dialog.exec_()):
-##            print self.dialog.directory().absolutePath()
-##            print self.dialog.directory().path()
 
     def okClick(self):
-##        musicPath = self.lineEdit.text()
-##        form.writeSettings()
-##        print musicPath
         global form
         global musicPath
-        musicPath = unicode(str(self.lineEdit.text()))
-        print '!!!!',type(musicPath)
-        print musicPath
+        musicPath = self.lineEdit.text().toUtf8()
+        form.pro.PathCollection = self.lineEdit.text().toUtf8()
         form.writeSettings()
         self.close()
 
@@ -87,6 +80,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowIcon(QtGui.QIcon('icon.png'))
         self.setWindowTitle('PyPlayer!')
+        self.PathCollection = None
         #-----------------------------------
         self.m_media = None
         self.currentRow = 0
@@ -109,6 +103,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.readSettings()
 ##        self.m_media.pause()
         self.setW = settingsWindow()
+
 
         #Подключаем обработчики
         self.connect(self.pushButton,QtCore.SIGNAL("clicked()"),self.play)#phononPlay
@@ -262,7 +257,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         settings.endGroup()
         settings.beginGroup('System')
         global musicPath
-        musicPath = settings.value('MusicPath').toString()
+        musicPath = unicode(settings.value('MusicPath').toString(),'utf8')
         settings.endGroup()
         settings.beginGroup('tableWidget')
         self.oldRow = settings.value('oldRow',0).toInt()[0]
@@ -327,10 +322,11 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
             self.albumList.addItem(item)
 
     def getTracks(self):
-        self.album = self.albumList.currentItem().text()
+        self.album = self.albumList.currentItem().text().toUtf8()
         self.titleList.clear()
-        aList = self.Coll.QueryToCollection2('select title from music where album="'\
-            +str(self.album)+'" and artist="'+unicode(self.artist)+'"')
+        print 'Uni album',unicode(self.album)
+        aList = self.Coll.QueryToCollection2('select title from music where album="'+unicode(self.album)+'"')
+        print aList
         for item in aList:
             self.titleList.addItem(item)
 
@@ -341,17 +337,17 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.tableWidget.setRowCount(curRow+1)
         #берем из списка title потом по нему достаем ID и по
         #нему уже получаем все остальное
-        self.title = self.titleList.currentItem().text()
+        self.title = self.titleList.currentItem().text().toUtf8()
         #находим нужный ID
         id = self.Coll.QueryToCollection('select id from music where title="'\
-            +unicode(self.title)+'"')
+            +self.title+'"')
         #нужные поля
         fields = 'track,title,artist,album,play_time,date,genre,stars,\
         file_size,path,plays,id'
         item = self.Coll.QueryToCollection('select '+fields+' from music where id='+str(id[0][0]))
         #заполняем одну строчку таблицы
         for i in xrange(12):
-            newItem = QTableWidgetItem(str(item[0][i]))
+            newItem = QTableWidgetItem(unicode(item[0][i]))
             self.tableWidget.setItem(curRow,i,newItem)
 
     def playNextTrack(self):
