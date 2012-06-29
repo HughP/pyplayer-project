@@ -129,7 +129,8 @@ class OhMyGod:
 
     def QueryToCollection(self, query):
         listQuery = []
-        self.cursor.execute(query)
+        print query
+        self.cursor.execute(unicode(query))
         items = self.cursor.fetchall()
         #for item in items:                  #перебор всех элементов в выдаче
         #    listQuery.append(item[0])

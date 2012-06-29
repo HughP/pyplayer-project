@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'f:\hg\pyplayer\pyplayer\ui\mainwindow.ui'
+# Form implementation generated from reading ui file 'h:\hg\pyplayer\pyplayer\ui\mainwindow.ui'
 #
-# Created: Wed Jun 27 14:12:57 2012
+# Created: Fri Jun 29 20:02:13 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -243,7 +243,7 @@ class Ui_MainWindow(object):
         self.playButton = QtGui.QPushButton(self.centralwidget)
         self.playButton.setText(_fromUtf8(""))
         icon14 = QtGui.QIcon()
-        icon14.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/control_play_blue.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon14.addPixmap(QtGui.QPixmap(_fromUtf8(":/newPrefix/control_pause_blue.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.playButton.setIcon(icon14)
         self.playButton.setObjectName(_fromUtf8("playButton"))
         self.horizontalLayout_3.addWidget(self.playButton)
@@ -291,7 +291,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addLayout(self.gridLayout_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 885, 20))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 885, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menu = QtGui.QMenu(self.menubar)
         self.menu.setObjectName(_fromUtf8("menu"))
@@ -316,11 +316,15 @@ class Ui_MainWindow(object):
         self.action_5.setObjectName(_fromUtf8("action_5"))
         self.actionScan = QtGui.QAction(MainWindow)
         self.actionScan.setObjectName(_fromUtf8("actionScan"))
+        self.adminAction = QtGui.QAction(MainWindow)
+        self.adminAction.setVisible(False)
+        self.adminAction.setObjectName(_fromUtf8("adminAction"))
         self.menu.addAction(self.actionScan)
         self.menu_2.addAction(self.action_3)
         self.menu_3.addAction(self.action_2)
         self.menu_3.addSeparator()
         self.menu_3.addAction(self.action_5)
+        self.menu_3.addAction(self.adminAction)
         self.menu_4.addAction(self.action)
         self.menubar.addAction(self.menu.menuAction())
         self.menubar.addAction(self.menu_2.menuAction())
@@ -379,6 +383,7 @@ class Ui_MainWindow(object):
         self.action_3.setText(QtGui.QApplication.translate("MainWindow", "Скрыть панель", None, QtGui.QApplication.UnicodeUTF8))
         self.action_5.setText(QtGui.QApplication.translate("MainWindow", "Сканировать библиотеку", None, QtGui.QApplication.UnicodeUTF8))
         self.actionScan.setText(QtGui.QApplication.translate("MainWindow", "Сканировать", None, QtGui.QApplication.UnicodeUTF8))
+        self.adminAction.setText(QtGui.QApplication.translate("MainWindow", "КонсольАдмина", None, QtGui.QApplication.UnicodeUTF8))
 
 from PyQt4 import phonon
 from PyQt4 import QtWebKit

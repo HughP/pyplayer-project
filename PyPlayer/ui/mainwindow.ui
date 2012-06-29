@@ -487,7 +487,7 @@
           </property>
           <property name="icon">
            <iconset resource="../icons/icons.qrc">
-            <normaloff>:/newPrefix/control_play_blue.png</normaloff>:/newPrefix/control_play_blue.png</iconset>
+            <normaloff>:/newPrefix/control_pause_blue.png</normaloff>:/newPrefix/control_pause_blue.png</iconset>
           </property>
          </widget>
         </item>
@@ -572,7 +572,7 @@
      <x>0</x>
      <y>0</y>
      <width>885</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -594,6 +594,7 @@
     <addaction name="action_2"/>
     <addaction name="separator"/>
     <addaction name="action_5"/>
+    <addaction name="adminAction"/>
    </widget>
    <widget class="QMenu" name="menu_4">
     <property name="title">
@@ -641,6 +642,14 @@
   <action name="actionScan">
    <property name="text">
     <string>Сканировать</string>
+   </property>
+  </action>
+  <action name="adminAction">
+   <property name="text">
+    <string>КонсольАдмина</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
  </widget>
