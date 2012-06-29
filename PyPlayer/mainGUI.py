@@ -20,6 +20,18 @@ form = None
 DEFAULT_COVER = '/icons/nocover.jpg'
 CURRENT_PATH_FIELD = 9
 
+class adminForm(QtGui.QWidget, UI_adminForm):
+    def __init__(self):
+        QtGui.QWidget.__init__(self)
+        self.setupUI(self)
+
+    def execScript(self):
+        if (self.sql.isChecked()):
+            #нажата кнопка sql
+            query = OhMyGod(False)
+            data = query.QueryToCollection(self.inputText.toPlainText().toUtf8())
+            print data
+
 
 
 class progressWindow(QtGui.QWidget, Ui_progressDialog):
@@ -340,7 +352,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.title = self.titleList.currentItem().text().toUtf8()
         #находим нужный ID
         id = self.Coll.QueryToCollection('select id from music where title="'\
-            +self.title+'"')
+            +unicode(self.title,'utf8')+'"')
         #нужные поля
         fields = 'track,title,artist,album,play_time,date,genre,stars,\
         file_size,path,plays,id'
@@ -395,10 +407,10 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         #убираем иконку "воспроизведения"
         self.tableWidget.item(self.oldRow,0).setIcon(QIcon(QPixmap('')))
         #получаем название трека из таблицы и по нему делаем запрос->получаем полный путь
-        path = self.tableWidget.item(self.oldRow,CURRENT_PATH_FIELD).text()
+        path = self.tableWidget.item(self.oldRow,CURRENT_PATH_FIELD).text().toUtf8()
         #проигрываем указанный путь
-        self.play(path)
-
+        print path
+        self.play(unicode(path,'utf8'))
         #обновляем проигрывания
         self.updatePlays()
 
