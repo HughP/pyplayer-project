@@ -8,6 +8,7 @@ from PyQt4.phonon import Phonon
 from ui_mainwindow import Ui_MainWindow
 from ui_progresswindow import Ui_progressDialog
 from ui_settingswindow import Ui_SettingsWindow
+from ui_adminform import Ui_adminForm
 from random import randint
 
 from DBOperation import OhMyGod
@@ -20,17 +21,20 @@ form = None
 DEFAULT_COVER = '/icons/nocover.jpg'
 CURRENT_PATH_FIELD = 9
 
-class adminForm(QtGui.QWidget, UI_adminForm):
+class adminForm(QtGui.QWidget, Ui_adminForm):
     def __init__(self):
         QtGui.QWidget.__init__(self)
-        self.setupUI(self)
+        self.setupUi(self)
+        self.connect(self.execButton,QtCore.SIGNAL('clicked()'),self.execScript)
 
     def execScript(self):
         if (self.sql.isChecked()):
             #нажата кнопка sql
-            query = OhMyGod(False)
-            data = query.QueryToCollection(self.inputText.toPlainText().toUtf8())
-            print data
+            self.query = OhMyGod(False)
+            self.data = self.query.QueryToCollection(self.inputText.toPlainText().toUtf8())
+            print 'Data',self.data
+    def exit(self):
+        pass
 
 
 
@@ -102,6 +106,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         #-----------------------------------
         #создаем окно
         self.pro = progressWindow('Pro')
+        self.adminF = adminForm()
         #self.setW = settingsWindow()
         #self.pro.show()
         #Подключение к коллекции
@@ -131,6 +136,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.clearPlsButton.clicked.connect(self.clearPlaylist)
         self.settingsButton.clicked.connect(self.setW.show)
         self.actionScan.triggered.connect(self.pro.show)
+        self.adminAction.triggered.connect(self.adminF.show)
         #показываем фс
         model = QFileSystemModel()
         model.setRootPath('C:\\')
@@ -156,8 +162,13 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         if e.key() == QtCore.Qt.Key_5:
             if (e.modifiers() & QtCore.Qt.CTRL):
                 self.updateStars('5')
-            #оценка 1 звезда
-            #update запись в бд
+        #показать админскую консоль
+        if (e.key() == QtCore.Qt.Key_A):
+            if (e.modifiers() & QtCore.Qt.CTRL):
+                self.adminAction.setVisible(True)
+                self.adminF.show()
+                print 'A'
+
 
     def tock(self, time):
         time = time/1000
