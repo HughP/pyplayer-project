@@ -77,13 +77,16 @@ class OhMyGod:
     def ScanFolders(self, PathCollection):
         fullpath = ''
         cover_path = ''
+        PathCollection = unicode(PathCollection,'utf8')
 
         if os.path.exists(PathCollection):
             print 'Path not exists!'
             for path, files, dirs in os.walk(PathCollection):
+                print 'Init scanning in: ',PathCollection
                 for name in dirs:
                     if name[-3:] == 'mp3':
                         fullpath = path + '\\' + name
+                        print fullpath
                         try:
                             tag_list = []
 
@@ -101,7 +104,6 @@ class OhMyGod:
                             tag_list.append( getsize(fullpath) )
                             tag_list.append( '0' )#оценка(по умолчанию 0)
                             tag_list.append( '0' )#колчиество проигрываний
-
 
                         except ID3NoHeaderError as e:
                             print 'NO TAGS! from file:',fullpath
@@ -136,6 +138,7 @@ class OhMyGod:
 
     def QueryToCollection2(self, query):
         listQuery = []
+        print 'Query=',query
         self.cursor.execute(query)
         items = self.cursor.fetchall()
         for item in items:                  #перебор всех элементов в выдаче
