@@ -18,7 +18,7 @@ version = 0.0006
 musicPath = ''
 global nameFile
 form = None
-DEFAULT_COVER = '/icons/nocover.jpg'
+DEFAULT_COVER = '../icons/nocover.jpg'
 CURRENT_PATH_FIELD = 9
 
 class adminForm(QtGui.QWidget, Ui_adminForm):
@@ -31,11 +31,9 @@ class adminForm(QtGui.QWidget, Ui_adminForm):
         if (self.sql.isChecked()):
             #нажата кнопка sql
             self.query = OhMyGod(False)
-            self.data = self.query.QueryToCollection(self.inputText.toPlainText().toUtf8())
-            print 'Data',self.data
-    def exit(self):
-        pass
-
+            self.data = self.query.QueryToCollection2(str(self.inputText.toPlainText()),True)
+            print unicode(str(self.data),'ascii')
+            self.outputText.setPlainText(str(self.data))
 
 
 class progressWindow(QtGui.QWidget, Ui_progressDialog):
@@ -113,7 +111,10 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.Coll = OhMyGod(0)
         #Заполняем artistList, albumList, titleList
         self.getArtist()
-##        self.getAlbum()
+        self.artistList.setCurrentRow(0)
+        self.getAlbum()
+        self.albumList.setCurrentRow(0)
+        self.getTracks()
 
         self.delayedInit()
         #Загружаем настройки
@@ -132,19 +133,43 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.stopButton.clicked.connect(self.StopPlayer)
         self.pushButton.clicked.connect(self.playNextTrack)
         self.prevButton.clicked.connect(self.playPrevTrack)
-        self.newPlsButton.clicked.connect(self.generateM3U)
+        self.newPlsButton.clicked.connect(self.saveM3U)
         self.clearPlsButton.clicked.connect(self.clearPlaylist)
         self.settingsButton.clicked.connect(self.setW.show)
         self.actionScan.triggered.connect(self.pro.show)
         self.adminAction.triggered.connect(self.adminF.show)
+        self.openPlaylist.triggered.connect(self.openPlayList)
         #показываем фс
         model = QFileSystemModel()
         model.setRootPath('C:\\')
         self.treeView.setModel(model)
-        self.loadM3U()
+        #self.loadM3U(filename = 'Pls\q1.m3u')
+
+    def openPlayList(self):
+        dialog = QtGui.QFileDialog()
+        #добавить запись о плейлисте в БД
+        #открыть сам плейлист и добавить в trackView
+        lines = self.loadM3U(filename=dialog.getOpenFileNameAndFilter(self,u'Выбрать m3u плейлист',\
+        'C:\\',u'Плейлисты (*.m3u)')[0])
+
+        curRow = self.tableWidget.currentRow()
+        #заполняем одну строчку trackView 1,2,4,9
+        for line in lines:
+            newItem = QTableWidgetItem(unicode(line['title']))
+            self.tableWidget.setItem(curRow,1,newItem)
+
+            newItem = QTableWidgetItem(unicode(line['artist']))
+            self.tableWidget.setItem(curRow,2,newItem)
+
+            newItem = QTableWidgetItem(unicode(line['length']))
+            self.tableWidget.setItem(curRow,4,newItem)
+
+            newItem = QTableWidgetItem(unicode(line['path']))
+            self.tableWidget.setItem(curRow,9,newItem)
 
     def closeEvent(self, event):
         self.writeSettings()
+
     def keyPressEvent(self, e):
         #----CTRL+1,2,3,4,5-------------
         if e.key() == QtCore.Qt.Key_1:
@@ -169,7 +194,6 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
                 self.adminF.show()
                 print 'A'
 
-
     def tock(self, time):
         time = time/1000
         h = time/3600
@@ -177,7 +201,6 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         s = (time-3600*h-m*60)
         self.lcdNumber.display('%02d:%02d:%02d'%(h,m,s))
 
-#--------------Инит для плеера--------------------------------------------------
     def delayedInit(self):
         if not self.m_media:
             print 'Player\'s init!'
@@ -201,7 +224,6 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
     def StopPlayer(self):
         self.m_media.stop()
 
-
     def play(self, path):
         self.delayedInit()
         if os.path.exists(path):
@@ -218,6 +240,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
             self.coverImage.setPixmap(QPixmap(cover[0][0]))
 
 #---------------Сохранение/Загрузка---------------------------------------------
+
     def writeSettings(self):
         settings = QtCore.QSettings('settings.ini',QtCore.QSettings.IniFormat)
         settings.beginGroup('MainWindow')
@@ -315,8 +338,6 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.albumList.setCurrentRow( settings.value('albumListCurRow').toInt()[0] )
         self.titleList.setCurrentRow( settings.value('titleListCurRow').toInt()[0] )
         settings.endGroup()
-#-------------------------------------------------------------------------------
-
 
     def showSplash(self,splash):
         splash.showMessage('Loadng')
@@ -329,7 +350,6 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         progressWindow.setAttribute(QtCore.Qt.WA_DeleteOnClose, True)
         progressWindow.resize(200,90)
         progressWindow.show()
-
 
     def getArtist(self):
         self.artistList.clear()
@@ -437,8 +457,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.Coll.updateTable('music','stars',star,self.getID(self.oldRow))
         self.tableWidget.item(self.oldRow, 7).setText(star)
 
-
-    def generateM3U(self,filename=u'Pls/main.m3u'):
+    def saveM3U(self,filename=u'Pls\main.m3u'):
         #колонки: название - 1; артист - 2; длина - 4; путь - 8;
         fp = file(filename, "w")
         fp.write("#EXTM3U\n")
@@ -455,9 +474,38 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
             fp.write(full_path + "\n")
         fp.close()
 
-    def loadM3U(self, filename=u'Pls/main.m3u'):
-        pass
+    def loadM3U(self, filename=u'Pls\main.m3u'):
+        """
+        Return [{'artist':'Korn','title':'Blind'}]
+        lists = loadM3U('korn.m3u')
+        for line in lists:
+            print 'Artist',line['artist']
+            print 'Title',line['title']
+            print 'Length',line['length']
+            print 'Path', line['path']
+        """
+        lists = list()
+        if os.path.exists(filename):
+            fp = file(filename,'r')
+            s = fp.readline()
+            if s == "#EXTM3U\n":
+                lines = fp.readlines()
+                lines=iter(lines)
+                for s in lines:
+                    if s[:7] == "#EXTINF":
+                        #убираем мусор(#EXTINF:)
+                        s = s[8:]
+                        length = s.split(',')[0]
+                        temp = s.split(',')[1]
+                        artist = temp.split('-')[0]
+                        title = temp.split('-')[1]
+                        path = next(lines)
+                        #формируем dict и добавляем в список
+                        d = {'artist':artist,'title':title,'length':length,'path':path}
+                        lists.append(d)
 
+            fp.close()
+        return lists
 
     def clearPlaylist(self):
         self.tableWidget.clearContents()
@@ -465,7 +513,6 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
 
     def getID(self,row):
         return str(self.tableWidget.item(row,11).text())
-
 
 def main():
     app = QtGui.QApplication(sys.argv)
