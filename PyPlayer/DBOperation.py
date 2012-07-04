@@ -31,6 +31,7 @@ class OhMyGod:
 
     def dropTable(self, table):
         self.cursor.execute('drop table '+table)
+
     def updateTable(self, table, column, value, value_id):
         s = 'update '+table+' set '+column+' = '+value \
         +' where id = '+value_id
@@ -48,11 +49,14 @@ class OhMyGod:
 
     def createTableMusic(self):
         self.cursor.execute('create table music (id integer primary key, artist varchar(30),\
-        album varchar(30),title varchar(30),date varchar(15),genre varchar(20),\
-        track varchar(10),path varchar(50), cover_path varchar(50),play_time varchar(10),\
-        file_size varchar(10), stars varchar(3), plays varchar(10))')
+                            album varchar(30),title varchar(30),date varchar(15),\
+                            genre varchar(20),track varchar(10),path varchar(50),\
+                            cover_path varchar(50),play_time varchar(10),file_size varchar(10),\
+                            stars varchar(3), plays varchar(10))')
 
-
+    def createPlaylistTable(self):
+        self.cursor.execute('create table playlists (id integer primary key, name varchar(30),\
+                            path varchar(30), date varchar(15), plays varchar(10))')
 
     def CoverFind(self, directory):
         for item in os.listdir(directory):
@@ -118,7 +122,6 @@ class OhMyGod:
                         print self.progress
         print 'End!'
 
-
     def AddToCollection(self,tag_list):
         query = u'insert into music (artist,album,title,genre,date,track,path,cover_path,\
         play_time,file_size,stars,plays) values (?,?,?,?,?,?,?,?,?,?,?,?)'
@@ -137,12 +140,14 @@ class OhMyGod:
 
         return items
 
-    def QueryToCollection2(self, query):
+    def QueryToCollection2(self, query, need_all=False):
         listQuery = []
         print 'Query=',query
         self.cursor.execute(query)
         items = self.cursor.fetchall()
-        for item in items:                  #перебор всех элементов в выдаче
-            listQuery.append(item[0])
-        return listQuery
-
+        if need_all:
+            return items
+        else:
+            for item in items:                  #перебор всех элементов в выдаче
+                listQuery.append(item[0])
+            return listQuery

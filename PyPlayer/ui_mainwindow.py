@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'h:\hg\pyplayer\pyplayer\ui\mainwindow.ui'
+# Form implementation generated from reading ui file 'f:\hg\pyplayer\pyplayer\ui\mainwindow.ui'
 #
-# Created: Fri Jun 29 20:02:13 2012
+# Created: Tue Jul 03 14:26:33 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -291,10 +291,12 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addLayout(self.gridLayout_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 885, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 885, 20))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menu = QtGui.QMenu(self.menubar)
         self.menu.setObjectName(_fromUtf8("menu"))
+        self.menu_5 = QtGui.QMenu(self.menu)
+        self.menu_5.setObjectName(_fromUtf8("menu_5"))
         self.menu_2 = QtGui.QMenu(self.menubar)
         self.menu_2.setObjectName(_fromUtf8("menu_2"))
         self.menu_3 = QtGui.QMenu(self.menubar)
@@ -319,7 +321,14 @@ class Ui_MainWindow(object):
         self.adminAction = QtGui.QAction(MainWindow)
         self.adminAction.setVisible(False)
         self.adminAction.setObjectName(_fromUtf8("adminAction"))
+        self.openPlaylist = QtGui.QAction(MainWindow)
+        self.openPlaylist.setObjectName(_fromUtf8("openPlaylist"))
+        self.action_6 = QtGui.QAction(MainWindow)
+        self.action_6.setObjectName(_fromUtf8("action_6"))
+        self.menu_5.addAction(self.openPlaylist)
+        self.menu_5.addAction(self.action_6)
         self.menu.addAction(self.actionScan)
+        self.menu.addAction(self.menu_5.menuAction())
         self.menu_2.addAction(self.action_3)
         self.menu_3.addAction(self.action_2)
         self.menu_3.addSeparator()
@@ -375,6 +384,7 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("MainWindow", "Инфа", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("MainWindow", "Текст", None, QtGui.QApplication.UnicodeUTF8))
         self.menu.setTitle(QtGui.QApplication.translate("MainWindow", "Библиотека", None, QtGui.QApplication.UnicodeUTF8))
+        self.menu_5.setTitle(QtGui.QApplication.translate("MainWindow", "Открыть", None, QtGui.QApplication.UnicodeUTF8))
         self.menu_2.setTitle(QtGui.QApplication.translate("MainWindow", "Вид", None, QtGui.QApplication.UnicodeUTF8))
         self.menu_3.setTitle(QtGui.QApplication.translate("MainWindow", "Правка", None, QtGui.QApplication.UnicodeUTF8))
         self.menu_4.setTitle(QtGui.QApplication.translate("MainWindow", "?", None, QtGui.QApplication.UnicodeUTF8))
@@ -384,6 +394,10 @@ class Ui_MainWindow(object):
         self.action_5.setText(QtGui.QApplication.translate("MainWindow", "Сканировать библиотеку", None, QtGui.QApplication.UnicodeUTF8))
         self.actionScan.setText(QtGui.QApplication.translate("MainWindow", "Сканировать", None, QtGui.QApplication.UnicodeUTF8))
         self.adminAction.setText(QtGui.QApplication.translate("MainWindow", "КонсольАдмина", None, QtGui.QApplication.UnicodeUTF8))
+        self.openPlaylist.setText(QtGui.QApplication.translate("MainWindow", "Плейлист", None, QtGui.QApplication.UnicodeUTF8))
+        self.openPlaylist.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+O", None, QtGui.QApplication.UnicodeUTF8))
+        self.action_6.setText(QtGui.QApplication.translate("MainWindow", "Папку", None, QtGui.QApplication.UnicodeUTF8))
+        self.action_6.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+D", None, QtGui.QApplication.UnicodeUTF8))
 
 from PyQt4 import phonon
 from PyQt4 import QtWebKit
