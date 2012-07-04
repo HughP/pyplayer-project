@@ -572,14 +572,22 @@
      <x>0</x>
      <y>0</y>
      <width>885</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
      <string>Библиотека</string>
     </property>
+    <widget class="QMenu" name="menu_5">
+     <property name="title">
+      <string>Открыть</string>
+     </property>
+     <addaction name="openPlaylist"/>
+     <addaction name="action_6"/>
+    </widget>
     <addaction name="actionScan"/>
+    <addaction name="menu_5"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -650,6 +658,22 @@
    </property>
    <property name="visible">
     <bool>false</bool>
+   </property>
+  </action>
+  <action name="openPlaylist">
+   <property name="text">
+    <string>Плейлист</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="action_6">
+   <property name="text">
+    <string>Папку</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
    </property>
   </action>
  </widget>
