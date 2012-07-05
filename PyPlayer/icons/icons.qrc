@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>save_playlist.png</file>
     <file>repeat.png</file>
     <file>star.png</file>
     <file>random.png</file>
