@@ -8,6 +8,7 @@ import fnmatch
 import sys
 import shutil
 from os.path import getsize
+from support import *
 """AddToCollection(all tags)"""
 version = 0.0001
 
@@ -38,15 +39,6 @@ class OhMyGod:
         print s
         self.cursor.execute(s)
 
-    def getStr(self):
-        self.cursor.execute('select id,artist from music')
-        items = self.cursor.fetchall()
-        for item in items:
-            id = item[0]
-            art = item[1]
-            print 'ID=',id
-            print 'Artist=',art
-
     def createTableMusic(self):
         self.cursor.execute('create table music (id integer primary key, artist varchar(30),\
                             album varchar(30),title varchar(30),date varchar(15),\
@@ -64,19 +56,6 @@ class OhMyGod:
                 return directory + '\\' + item
             if fnmatch.fnmatch(item,'*.jpg'):
                 return directory + '\\' + item  #возвращаем первый найденный jpeg
-
-    def S2HMS(self,t):
-    # Converts seconds to a string formatted H:mm:ss
-        if t > 3600:
-            h = int(t/3600)
-            r = t-(h*3600)
-            m = int(r / 60)
-            s = int(r-(m*60))
-            return '{0}:{1:02n}:{2:02n}'.format(h,m,s)
-        else:
-            m = int(t / 60)
-            s = int(t-(m*60))
-            return '{0}:{1:02n}'.format(m,s)
 
     def ScanFolders(self, PathCollection):
         fullpath = ''
@@ -104,7 +83,7 @@ class OhMyGod:
                             tag_list.append( audio.get('tracknumber',"00")[0])
                             tag_list.append( fullpath )
                             tag_list.append( self.CoverFind(path) )
-                            tag_list.append( self.S2HMS(info_track.info.length))
+                            tag_list.append( S2HMS(info_track.info.length))
                             tag_list.append( getsize(fullpath) )
                             tag_list.append( '0' )#оценка(по умолчанию 0)
                             tag_list.append( '0' )#колчиество проигрываний
