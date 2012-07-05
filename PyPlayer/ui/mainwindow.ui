@@ -320,6 +320,9 @@
                 <height>24</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>Очистить окно</string>
+              </property>
               <property name="text">
                <string/>
               </property>
@@ -332,6 +335,26 @@
               </property>
               <property name="checked">
                <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="savePlsButton">
+              <property name="minimumSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Сохранить в плейлист [Ctrl+S]</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../icons/icons.qrc">
+                <normaloff>:/newPrefix/save_playlist.png</normaloff>:/newPrefix/save_playlist.png</iconset>
               </property>
              </widget>
             </item>
@@ -349,6 +372,9 @@
                 <height>24</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>Вкл/Выкл рандом</string>
+              </property>
               <property name="text">
                <string/>
               </property>
@@ -363,6 +389,9 @@
             </item>
             <item>
              <widget class="QPushButton" name="repeatButton">
+              <property name="toolTip">
+               <string>Вкл/Выкл повтор</string>
+              </property>
               <property name="text">
                <string/>
               </property>
@@ -372,23 +401,6 @@
               </property>
               <property name="checkable">
                <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="newPlsButton">
-              <property name="minimumSize">
-               <size>
-                <width>24</width>
-                <height>24</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="../icons/icons.qrc">
-                <normaloff>:/newPrefix/add_pls.png</normaloff>:/newPrefix/add_pls.png</iconset>
               </property>
              </widget>
             </item>
@@ -572,7 +584,7 @@
      <x>0</x>
      <y>0</y>
      <width>885</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">

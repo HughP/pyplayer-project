@@ -10,6 +10,7 @@ from ui_progresswindow import Ui_progressDialog
 from ui_settingswindow import Ui_SettingsWindow
 from ui_adminform import Ui_adminForm
 from random import randint
+import m3u
 
 from DBOperation import OhMyGod
 import os
@@ -133,39 +134,61 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.stopButton.clicked.connect(self.StopPlayer)
         self.pushButton.clicked.connect(self.playNextTrack)
         self.prevButton.clicked.connect(self.playPrevTrack)
-        self.newPlsButton.clicked.connect(self.saveM3U)
+
         self.clearPlsButton.clicked.connect(self.clearPlaylist)
         self.settingsButton.clicked.connect(self.setW.show)
         self.actionScan.triggered.connect(self.pro.show)
         self.adminAction.triggered.connect(self.adminF.show)
         self.openPlaylist.triggered.connect(self.openPlayList)
+        self.savePlsButton.clicked.connect(self.savePlaylist)
         #показываем фс
         model = QFileSystemModel()
         model.setRootPath('C:\\')
         self.treeView.setModel(model)
-        #self.loadM3U(filename = 'Pls\q1.m3u')
 
     def openPlayList(self):
         dialog = QtGui.QFileDialog()
         #добавить запись о плейлисте в БД
         #открыть сам плейлист и добавить в trackView
-        lines = self.loadM3U(filename=dialog.getOpenFileNameAndFilter(self,u'Выбрать m3u плейлист',\
-        'C:\\',u'Плейлисты (*.m3u)')[0])
+        name=dialog.getOpenFileNameAndFilter(self,u'Выбрать m3u плейлист',\
+            'C:\\',u'Плейлисты (*.m3u)')[0]
+        lines = m3u.openM3U(filename=name)
 
-        curRow = self.tableWidget.currentRow()
         #заполняем одну строчку trackView 1,2,4,9
         for line in lines:
-            newItem = QTableWidgetItem(unicode(line['title']))
-            self.tableWidget.setItem(curRow,1,newItem)
+            row = self.tableWidget.rowCount()
+            self.tableWidget.setRowCount(row+1)
+            for column in xrange(12):
+                if column == 1:
+                    field = line['title']
+                elif column == 2:
+                    field = line['artist']
+                elif column == 4:
+                    field = line['length']
+                elif column == 9:
+                    field = line['path']
+                else:
+                    field = 'None data'
 
-            newItem = QTableWidgetItem(unicode(line['artist']))
-            self.tableWidget.setItem(curRow,2,newItem)
+                newItem = QTableWidgetItem(unicode(field))
+                self.tableWidget.setItem(row,column,newItem)
 
-            newItem = QTableWidgetItem(unicode(line['length']))
-            self.tableWidget.setItem(curRow,4,newItem)
 
-            newItem = QTableWidgetItem(unicode(line['path']))
-            self.tableWidget.setItem(curRow,9,newItem)
+    def savePlaylist(self):
+        lists = list()
+        #бежим по таблице
+        for row in xrange(self.tableWidget.rowCount()):
+            d = {'title':self.tableWidget.item(row,1).text(),
+                 'artist':self.tableWidget.item(row,2).text(),
+                 'length':self.tableWidget.item(row,4).text(),
+                 'path':self.tableWidget.item(row,9).text()}
+            #загоняем все данные в lists
+            lists.append(d)
+
+        dialog = QtGui.QFileDialog()
+        name = dialog.getSaveFileNameAndFilter(self,u'Сохранить плейлист',\
+            'C:\\',u'Плейлисты (*.m3u)')[0]
+        m3u.saveM3U(lists,filename=namre)
 
     def closeEvent(self, event):
         self.writeSettings()
