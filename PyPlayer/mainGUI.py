@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+from types import NoneType
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -188,7 +189,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         dialog = QtGui.QFileDialog()
         name = dialog.getSaveFileNameAndFilter(self,u'Сохранить плейлист',\
             'C:\\',u'Плейлисты (*.m3u)')[0]
-        m3u.saveM3U(lists,filename=namre)
+        m3u.saveM3U(lists,filename=name)
 
     def closeEvent(self, event):
         self.writeSettings()
@@ -381,20 +382,27 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
             self.artistList.addItem(item)
 
     def getAlbum(self):
-        self.artist = self.artistList.currentItem().text()
-        self.albumList.clear()
-        aList = self.Coll.QueryToCollection2('select distinct album from music where artist="'+unicode(self.artist)+'"')
-        for item in aList:
-            self.albumList.addItem(item)
+        #лучше сделать exceptions
+        if self.artistList.currentItem() is None:
+            print 'Error! [NoneType]'
+        else:
+            self.artist = self.artistList.currentItem().text()
+            self.albumList.clear()
+            aList = self.Coll.QueryToCollection2('select distinct album from music where artist="'+unicode(self.artist)+'"')
+            for item in aList:
+                self.albumList.addItem(item)
 
     def getTracks(self):
-        self.album = self.albumList.currentItem().text().toUtf8()
-        self.titleList.clear()
-        print 'Uni album',unicode(self.album)
-        aList = self.Coll.QueryToCollection2('select title from music where album="'+unicode(self.album)+'"')
-        print aList
-        for item in aList:
-            self.titleList.addItem(item)
+        if self.albumList.currentItem() is None:
+            print 'Error! [NoneType]'
+        else:
+            self.album = self.albumList.currentItem().text().toUtf8()
+            self.titleList.clear()
+            print 'Uni album',unicode(self.album)
+            aList = self.Coll.QueryToCollection2('select title from music where album="'+unicode(self.album)+'"')
+            print aList
+            for item in aList:
+                self.titleList.addItem(item)
 
     def getTracksToView(self):
         #запоминаем текущую строчку

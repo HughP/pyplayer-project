@@ -1,87 +1,23 @@
-def getTracksToView(self):
-    curRow = self.tableWidget.rowCount()
-    print 'curRow = ',curRow
-    self.tableWidget.setRowCount(curRow+1)
+# -*- coding: utf-8 -*-
 
-    curCol = 0
-    self.title = self.titleList.currentItem().text()
+def S2HMS(t):
+# Converts seconds to a string formatted H:mm:ss
+    if t > 3600:
+        h = int(t/3600)
+        r = t-(h*3600)
+        m = int(r / 60)
+        s = int(r-(m*60))
+        return '{0}:{1:02n}:{2:02n}'.format(h,m,s)
+    else:
+        m = int(t / 60)
+        s = int(t-(m*60))
+        return '{0}:{1:02n}'.format(m,s)
 
-    aList = self.Coll.QueryToCollection('select track from music where title="'\
-                                        +unicode(self.title)+'"')
-    print aList[0]
-    newItem = QTableWidgetItem(aList[0])
-    self.tableWidget.setItem(curRow,curCol,newItem)
-
-    curCol+=1
-    newItem = QTableWidgetItem(self.title)
-    self.tableWidget.setItem(curRow,curCol,newItem)
-
-    curCol+=1
-    aList = self.Coll.QueryToCollection('select artist from music where title="'\
-                                        +unicode(self.title)+'"')
-    print aList[0]
-    newItem = QTableWidgetItem(aList[0])
-    self.tableWidget.setItem(curRow,curCol,newItem)
-
-    curCol+=1
-    aList = self.Coll.QueryToCollection('select album from music where title="'\
-                                        +unicode(self.title)+'"')
-    print aList[0]
-    newItem = QTableWidgetItem(aList[0])
-    self.tableWidget.setItem(curRow,curCol,newItem)
-
-    curCol+=1
-    aList = self.Coll.QueryToCollection('select play_time from music where title="'\
-                                        +unicode(self.title)+'"')
-    print aList[0]
-    newItem = QTableWidgetItem(aList[0])
-    self.tableWidget.setItem(curRow,curCol,newItem)
-
-    curCol+=1
-    aList = self.Coll.QueryToCollection('select date from music where title="'\
-                                        +unicode(self.title)+'"')
-    print aList[0]
-    newItem = QTableWidgetItem(aList[0])
-    self.tableWidget.setItem(curRow,curCol,newItem)
-
-    curCol+=1
-    aList = self.Coll.QueryToCollection('select genre from music where title="'\
-                                        +unicode(self.title)+'"')
-    print aList[0]
-    newItem = QTableWidgetItem(aList[0])
-    self.tableWidget.setItem(curRow,curCol,newItem)
+def strToSec(sec):
+# Converts string 3:58 -> int 238
+    min = int(sec.split(':')[0])
+    min *= 60
+    min = min + int(sec.split(':')[1])
+    return min
 
 
-    curCol+=1
-    aList = self.Coll.QueryToCollection('select file_size from music where title="'\
-                                        +unicode(self.title)+'"')
-    newItem = QTableWidgetItem(aList[0])
-    self.tableWidget.setItem(curRow,curCol,newItem)
-
-    curCol+=1
-    aList = self.Coll.QueryToCollection('select path from music where title="'\
-                                        +unicode(self.title)+'"')
-    print aList[0]
-    newItem = QTableWidgetItem(aList[0])
-    self.tableWidget.setItem(curRow,curCol,newItem)
-
-def QueryToCollection(self, query):
-    listQuery = []
-    self.cursor.execute(query)
-    items = self.cursor.fetchall()
-    for item in items:                  #перебор всех элементов в выдаче
-        listQuery.append(item[0])
-
-    return listQuery
-
-    """ i = 0
-    newItem = QTableWidgetItem(item[0][0])
-    self.tableWidget.setItem(curRow,i,newItem)
-
-    i+=1
-    newItem = QTableWidgetItem(item[0][1])
-    self.tableWidget.setItem(curRow,i,newItem)
-
-    i+=1
-    newItem = QTableWidgetItem(item[0][1])
-    self.tableWidget.setItem(curRow,i,newItem)"""

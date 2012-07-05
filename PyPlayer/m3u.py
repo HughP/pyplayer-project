@@ -3,6 +3,7 @@
 '''
 
 import os
+from support import *
 
 def saveM3U(lists,filename=u'Pls\main.m3u'):
     fp = file(filename, "w")
@@ -34,7 +35,7 @@ def openM3U(filename=u'Pls\main.m3u'):
                 if s[:7] == "#EXTINF":
                     #убираем мусор(#EXTINF:)
                     s = s[8:]
-                    length = s.split(',')[0]
+                    length = strToSec(s.split(',')[0])
                     temp = s.split(',')[1]
                     artist = temp.split('-')[0]
                     title = temp.split('-')[1]
