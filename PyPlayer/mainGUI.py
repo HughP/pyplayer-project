@@ -480,56 +480,6 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.Coll.updateTable('music','stars',star,self.getID(self.oldRow))
         self.tableWidget.item(self.oldRow, 7).setText(star)
 
-    def saveM3U(self,filename=u'Pls\main.m3u'):
-        #колонки: название - 1; артист - 2; длина - 4; путь - 8;
-        fp = file(filename, "w")
-        fp.write("#EXTM3U\n")
-        for row in xrange(self.tableWidget.rowCount()):
-##            str1 += self.tableWidget.item(row,col).text()
-            #получаем данные для формрования m3u
-            title = self.tableWidget.item(row,1).text()
-            artist = self.tableWidget.item(row,2).text()
-            track_length = self.tableWidget.item(row,4).text()
-            full_path = self.tableWidget.item(row,8).text()
-            #формируем m3u плейлист
-            fp.write("#EXTINF" + ":" + track_length + "," +\
-                             artist + " - " + title + "\n")
-            fp.write(full_path + "\n")
-        fp.close()
-
-    def loadM3U(self, filename=u'Pls\main.m3u'):
-        """
-        Return [{'artist':'Korn','title':'Blind'}]
-        lists = loadM3U('korn.m3u')
-        for line in lists:
-            print 'Artist',line['artist']
-            print 'Title',line['title']
-            print 'Length',line['length']
-            print 'Path', line['path']
-        """
-        lists = list()
-        if os.path.exists(filename):
-            fp = file(filename,'r')
-            s = fp.readline()
-            if s == "#EXTM3U\n":
-                lines = fp.readlines()
-                lines=iter(lines)
-                for s in lines:
-                    if s[:7] == "#EXTINF":
-                        #убираем мусор(#EXTINF:)
-                        s = s[8:]
-                        length = s.split(',')[0]
-                        temp = s.split(',')[1]
-                        artist = temp.split('-')[0]
-                        title = temp.split('-')[1]
-                        path = next(lines)
-                        #формируем dict и добавляем в список
-                        d = {'artist':artist,'title':title,'length':length,'path':path}
-                        lists.append(d)
-
-            fp.close()
-        return lists
-
     def clearPlaylist(self):
         self.tableWidget.clearContents()
         self.tableWidget.setRowCount(0)
