@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'h:\hg\pyplayer\pyplayer\ui\mainwindow.ui'
+# Form implementation generated from reading ui file 'f:\hg\pyplayer\pyplayer\ui\mainwindow.ui'
 #
-# Created: Thu Jul 05 00:37:15 2012
+# Created: Fri Jul 06 09:27:40 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
