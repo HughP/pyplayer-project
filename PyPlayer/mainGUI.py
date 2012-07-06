@@ -12,9 +12,10 @@ from ui_settingswindow import Ui_SettingsWindow
 from ui_adminform import Ui_adminForm
 from random import randint
 import m3u
+from datetime import date
 
 from DBOperation import OhMyGod
-import os
+from os import path
 
 version = 0.0006
 musicPath = ''
@@ -189,7 +190,10 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         dialog = QtGui.QFileDialog()
         name = dialog.getSaveFileNameAndFilter(self,u'Сохранить плейлист',\
             'C:\\',u'Плейлисты (*.m3u)')[0]
+        print name
+
         m3u.saveM3U(lists,filename=name)
+        self.Coll.addPlaylistToDB(path.splitext(str(name))[0],name,date.today().isoformat(),'0')
 
     def closeEvent(self, event):
         self.writeSettings()

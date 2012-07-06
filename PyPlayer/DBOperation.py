@@ -17,8 +17,7 @@ class OhMyGod:
     def __init__(self,drop):
         self.connection = sqlite.Connection('music.db')
         self.cursor = self.connection.cursor()
-        self.cursor.execute('select name from SQLITE_MASTER where name = "music"')
-        if self.cursor.fetchone() is None:
+        if not self.checkTable('music'):
             self.createTableMusic()
             print 'This is first start! Make Library'
         else:
@@ -30,8 +29,16 @@ class OhMyGod:
 
         self.progress = 0
 
+    def checkTable(self,table):
+        self.cursor.execute('select name from SQLITE_MASTER where name="'+table+'"')
+        if self.cursor.fetchone() is None:
+            return False
+        else:
+            return True
+
     def dropTable(self, table):
         self.cursor.execute('drop table '+table)
+
 
     def updateTable(self, table, column, value, value_id):
         s = 'update '+table+' set '+column+' = '+value \
@@ -49,6 +56,14 @@ class OhMyGod:
     def createPlaylistTable(self):
         self.cursor.execute('create table playlists (id integer primary key, name varchar(30),\
                             path varchar(30), date varchar(15), plays varchar(10))')
+
+    def addPlaylistToDB(self,name,path,date,plays):
+        if not self.checkTable('playlists'):
+            self.createPlaylistTable()
+        q = 'insert into playlists (name,path,date,plays) values ("'+name+'","'+path+'","'+date+'","'+plays+'")'
+        print q
+        self.cursor.execute(unicode(q))
+        self.connection.commit()
 
     def CoverFind(self, directory):
         for item in os.listdir(directory):
