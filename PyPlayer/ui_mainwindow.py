@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'f:\hg\pyplayer\pyplayer\ui\mainwindow.ui'
+# Form implementation generated from reading ui file 'h:\hg\pyplayer\pyplayer\ui\mainwindow.ui'
 #
-# Created: Fri Jul 06 09:27:40 2012
+# Created: Sun Jul 08 14:47:24 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -37,12 +37,8 @@ class Ui_MainWindow(object):
         self.treeWidget.setAlternatingRowColors(False)
         self.treeWidget.setRootIsDecorated(True)
         self.treeWidget.setAnimated(True)
-        self.treeWidget.setColumnCount(1)
+        self.treeWidget.setColumnCount(0)
         self.treeWidget.setObjectName(_fromUtf8("treeWidget"))
-        self.treeWidget.headerItem().setText(0, _fromUtf8("1"))
-        item_0 = QtGui.QTreeWidgetItem(self.treeWidget)
-        item_1 = QtGui.QTreeWidgetItem(item_0)
-        item_0 = QtGui.QTreeWidgetItem(self.treeWidget)
         self.treeWidget.header().setVisible(False)
         self.verticalLayout_3.addWidget(self.treeWidget)
         self.tabWidget_2.addTab(self.tab_4, _fromUtf8(""))
@@ -347,12 +343,6 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
-        __sortingEnabled = self.treeWidget.isSortingEnabled()
-        self.treeWidget.setSortingEnabled(False)
-        self.treeWidget.topLevelItem(0).setText(0, QtGui.QApplication.translate("MainWindow", "Плейлисты", None, QtGui.QApplication.UnicodeUTF8))
-        self.treeWidget.topLevelItem(0).child(0).setText(0, QtGui.QApplication.translate("MainWindow", "Основной", None, QtGui.QApplication.UnicodeUTF8))
-        self.treeWidget.topLevelItem(1).setText(0, QtGui.QApplication.translate("MainWindow", "Онлайн Радио", None, QtGui.QApplication.UnicodeUTF8))
-        self.treeWidget.setSortingEnabled(__sortingEnabled)
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_4), QtGui.QApplication.translate("MainWindow", "Плейлисты", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_5), QtGui.QApplication.translate("MainWindow", "Локальная ФС", None, QtGui.QApplication.UnicodeUTF8))
         self.tableWidget.setSortingEnabled(True)

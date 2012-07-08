@@ -65,6 +65,16 @@ class OhMyGod:
         self.cursor.execute(unicode(q))
         self.connection.commit()
 
+    def showPlsInTreeView(self):
+        items = self.cursor.execute('select name from playlists')
+        return items.fetchall()
+
+    def getPlsPath(self, name):
+        self.cursor.execute('select path from playlists where name="'+name+'"')
+        return self.cursor.fetchone()
+
+
+
     def CoverFind(self, directory):
         for item in os.listdir(directory):
             if os.path.exists('cover.jpg'):
