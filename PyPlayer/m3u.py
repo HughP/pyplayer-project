@@ -52,9 +52,9 @@ def openM3U(filename=u'Pls\main.m3u'):
                     id = s.split(',')[7]
                     py = 1
                 #формируем dict и добавляем в список
-                d = {'artist':artist,'title':title,'length':length,'path':path,
-                     'track':track,'album':album,'date':date,'genre':genre,
-                     'stars':stars,'size':size,'plays':plays,'id':id,'py':py}
+                d = {'artist':artist,'title':title,'length':length,'path':path}
+                     #'track':track,'album':album,'date':date,'genre':genre,
+                     #'stars':stars,'size':size,'plays':plays,'id':id,'py':py}
                 lists.append(d)
 
         fp.close()

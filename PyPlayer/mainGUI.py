@@ -143,18 +143,47 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.adminAction.triggered.connect(self.adminF.show)
         self.openPlaylist.triggered.connect(self.openPlayList)
         self.savePlsButton.clicked.connect(self.savePlaylist)
+        #self.treeWidget.itemExpanded.connect(self.hello)
+        #показываем плейлисты
+        self.treeWidget.setColumnCount(1)
+        self.plsTopLevelItem = QtGui.QTreeWidgetItem(self.treeWidget)
+        self.treeWidget.addTopLevelItem(self.plsTopLevelItem)
+        self.plsTopLevelItem.setText(0,u'Плейлисты')
+
+        for item in self.Coll.showPlsInTreeView():
+            pls2 = QtGui.QTreeWidgetItem(item)
+            self.plsTopLevelItem.addChild(pls2)
+        self.treeWidget.clicked.connect(self.onClick)
+
+        #self.pls2 = QtGui.QTreeWidgetItem(self.plsTopLevelItem)
+        #self.pls2.setText(0,'Item')
+        print self.Coll.showPlsInTreeView()
+
         #показываем фс
         model = QFileSystemModel()
         model.setRootPath('C:\\')
         self.treeView.setModel(model)
 
-    def openPlayList(self):
-        dialog = QtGui.QFileDialog()
-        #добавить запись о плейлисте в БД
-        #открыть сам плейлист и добавить в trackView
-        name=dialog.getOpenFileNameAndFilter(self,u'Выбрать m3u плейлист',\
-            'C:\\',u'Плейлисты (*.m3u)')[0]
-        lines = m3u.openM3U(filename=name)
+    def onExpand(self):
+        print 'Expand!'
+        #показать из бд все плейлисты
+
+    def onClick(self):
+        namePls = unicode(self.treeWidget.currentItem().text(0))
+        if namePls == u'Плейлисты':
+            pass
+        else:
+            print self.Coll.getPlsPath(namePls)[0]
+            self.openPlayList(0,self.Coll.getPlsPath(namePls)[0])
+
+    def openPlayList(self,show_dialog=1,file_name=''):
+        if show_dialog == 1:
+            dialog = QtGui.QFileDialog()
+            #добавить запись о плейлисте в БД
+            #открыть сам плейлист и добавить в trackView
+            file_name=dialog.getOpenFileNameAndFilter(self,u'Выбрать m3u плейлист',\
+                'C:\\',u'Плейлисты (*.m3u)')[0]
+        lines = m3u.openM3U(filename=file_name)
 
         #заполняем одну строчку trackView 1,2,4,9
         for line in lines:
@@ -254,7 +283,7 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
 
     def play(self, path):
         self.delayedInit()
-        if os.path.exists(path):
+        if path.exists(path):
             print 'Path exists!'
         else:
             print 'Path NOT exists!'
