@@ -212,17 +212,24 @@ class TWindow(QtGui.QMainWindow, Ui_MainWindow):
             d = {'title':self.tableWidget.item(row,1).text(),
                  'artist':self.tableWidget.item(row,2).text(),
                  'length':self.tableWidget.item(row,4).text(),
-                 'path':self.tableWidget.item(row,9).text()}
+                 'path':self.tableWidget.item(row,9).text(),
+                 'track':self.tableWidget.item(row,0).text(),
+                 'date':self.tableWidget.item(row,5).text(),
+                 'album':self.tableWidget.item(row,3).text(),
+                 'genre':self.tableWidget.item(row,6).text(),
+                 'stars':self.tableWidget.item(row,7).text(),
+                 'size':self.tableWidget.item(row,8).text(),
+                 'plays':self.tableWidget.item(row,10).text(),
+                 'id':self.tableWidget.item(row,11).text()}
             #загоняем все данные в lists
             lists.append(d)
 
         dialog = QtGui.QFileDialog()
         name = dialog.getSaveFileNameAndFilter(self,u'Сохранить плейлист',\
             'C:\\',u'Плейлисты (*.m3u)')[0]
-        print name
 
         m3u.saveM3U(lists,filename=name)
-        self.Coll.addPlaylistToDB(path.splitext(str(name))[0],name,date.today().isoformat(),'0')
+        self.Coll.addPlaylistToDB(path.basename(str(name))[0],name,date.today().isoformat(),'0')
 
     def closeEvent(self, event):
         self.writeSettings()

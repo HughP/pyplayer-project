@@ -11,6 +11,8 @@ def saveM3U(lists,filename=u'Pls\main.m3u'):
     for item in lists:
         fp.write('#EXTINF:'+item['length']+','+item['artist']+'-'+item['title']+'\n')
         fp.write(item['path']+'\n')
+        fp.write('#PyPlayer:'+item['track']+','+item['album']+','+item['date']+','+\
+        item['genre']+','+item['stars']+','+item['plays']+','+item['id']+'\n')
     fp.close()
 
 def openM3U(filename=u'Pls\main.m3u'):
@@ -52,9 +54,9 @@ def openM3U(filename=u'Pls\main.m3u'):
                     id = s.split(',')[7]
                     py = 1
                 #формируем dict и добавляем в список
-                d = {'artist':artist,'title':title,'length':length,'path':path}
-                     #'track':track,'album':album,'date':date,'genre':genre,
-                     #'stars':stars,'size':size,'plays':plays,'id':id,'py':py}
+                d = {'artist':artist,'title':title,'length':length,'path':path,
+                     'track':track,'album':album,'date':date,'genre':genre,
+                     'stars':stars,'size':size,'plays':plays,'id':id,'py':py}
                 lists.append(d)
 
         fp.close()
